@@ -47,7 +47,7 @@ sudo raspi-config
 7. Setup a static ip for `eth0` interface on your `master` node
 
 ```
-sudo nano /etc/network/interfaces.d/eht0
+$ sudo nano /etc/network/interfaces.d/eht0
 ```
 
 Then add the following to the file:
@@ -62,18 +62,18 @@ iface eth0 inet static
  
  8. Save & Exit, then reboot. After reboot verify your `eth0` ip address is `10.0.0.1` by running:
  ```
- ifconfig
+ $ ifconfig
  ```
  
  9. Setup a dhcp server on the `master` node by installing `isc-dhcp-server` as follows:
  ```
- sudo apt-get install isc-dhcp-server
+$ sudo apt-get install isc-dhcp-server
  ```
  
  Config your dhcp server by editing the following /etc/dhcp/dhcpd.conf
  
  ```
-sudo nano /etc/dhcp/dhcpd.conf
+$ sudo nano /etc/dhcp/dhcpd.conf
  ```
  
  Then add the following to the file:
@@ -101,7 +101,7 @@ For the other nodes in your cluster connected to the switch to be able to have i
 
 10. Setup Port Forwarding edit the following file /etc/sysctl.conf
 ```
-sudo nano /etc/sysctl.conf
+$ sudo nano /etc/sysctl.conf
 ```
 
 Uncomment or set the following to enable port fowarding:
@@ -110,7 +110,7 @@ net.ipv4.ip_forward=1
 ```
 11. Setup the iptables so the master node can forward the `wlan0` interface connected to the internet to the `eth0` interface connected to the switch
 ```
-sudo nano /etc/rc.local
+$ sudo nano /etc/rc.local
 ```
 
 There might be something in this file just make sure you add the below changes before the `exit 0`
