@@ -26,3 +26,8 @@ Exact parts I purchased via Amazon:
 * [CablesOnline 5-PACK 6 inch USB 2.0 A-Type Male to Micro-B Male Charge & Sync Cable, USB-1500-5](https://www.amazon.com/gp/product/B00D0XUKIQ/ref=ppx_yo_dt_b_asin_title_o04_s00?ie=UTF8&psc=1)
 * [Buhbo 0.5 FT (6 inch) Cat6 Flat Ethernet Network Cable RJ45 (5-Pack), Black](https://www.amazon.com/gp/product/B01HC11V4I/ref=ppx_od_dt_b_asin_title_s00?ie=UTF8&psc=1)
 * [Onite DC Plugs Small Electronics and Devices Universal 5.5x2.1mm Jack to Plugs 4.0x1.7mm, 3.5x1.35mm, 3.0x1.0mm, 2.5x0.7mm, USB to DC 5.5x2.1mm Cable (DC4+1)](https://www.amazon.com/gp/product/B01C5KQD5I/ref=ppx_yo_dt_b_asin_title_o00_s00?ie=UTF8&psc=1)
+
+## Setting up the Raspberry Pi's SD cars
+
+* Download [Raspbian Stretch Lite](https://www.raspberrypi.org/downloads/raspbian/)
+* Flash Each micro SDHC card using [Etcher.io](https://etcher.io) or any other preferred method for flashing
