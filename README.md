@@ -13,9 +13,20 @@ A simple guide to building a Kubernetes cluster with Raspberry Pi. I started by 
 * Raspberry Pi Cluster Case
 * 5 Port Ethernet Switch)
 * 5 Port USB Wall Charger - (Powers the Raspberry Pi & Ethernet Switch)
-* 6 inch Cat6 Ethernet Network Cable
+* 6 inch Cat6 Ethernet Network Cable - (One for each Raspberry Pi)
+* 6 inch USB a-type to micro USB B - (One for each Raspberry Pi)
 * Barrell Plug to USB - (Optional but means you can power the Ethernet Switch with USB)
 * A way to plug in the micro SDHC into your computer for flashing Raspbian
+
+## My Amazon Links to what I purchased:
+* [Raspberry Pi 3 B+ Motherboard](https://www.amazon.com/gp/product/B07BDR5PDW/ref=ppx_yo_dt_b_asin_title_o03_s00?ie=UTF8&psc=1)
+* [32GB micro SDHC](https://www.amazon.com/gp/product/B073JWXGNT/ref=ppx_yo_dt_b_asin_title_o02_s00?ie=UTF8&psc=1)
+* [Raspberry Pi Cluster Case](https://www.amazon.com/gp/product/B07CTG5N3V/ref=ppx_yo_dt_b_asin_title_o03_s00?ie=UTF8&psc=1)
+* [5 Port Fast Ethernet Switch](https://www.amazon.com/gp/product/B000FNFSPY/ref=ppx_od_dt_b_asin_title_s00?ie=UTF8&psc=1)
+* [5 Port USB Hub](https://www.amazon.com/gp/product/B07DNQJSC4/ref=ppx_yo_dt_b_asin_title_o03_s00?ie=UTF8&psc=1)
+* [5-PACK 6 inch USB 2.0 A-Type Male to Micro-B Male Cable](https://www.amazon.com/gp/product/B00D0XUKIQ/ref=ppx_yo_dt_b_asin_title_o04_s00?ie=UTF8&psc=1)
+* [5-PACK 6 inch Ethernet Cable](https://www.amazon.com/gp/product/B01HC11V4I/ref=ppx_od_dt_b_asin_title_s00?ie=UTF8&psc=1)
+* [Barrel Plug To USB](https://www.amazon.com/gp/product/B01C5KQD5I/ref=ppx_yo_dt_b_asin_title_o00_s00?ie=UTF8&psc=1)
 
 ## Setting up the Raspberry Pi's SD cards
 1. Download [Raspbian Stretch Lite](https://www.raspberrypi.org/downloads/raspbian/)
