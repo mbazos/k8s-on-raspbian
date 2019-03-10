@@ -36,15 +36,98 @@ A simple guide to building a Kubernetes cluster with Raspberry Pi. I started by 
 1. Plug in the SDHC card to the pi
 1. Plug in the the `master` node pi to the network switch
 1. Boot up the `master` node.
-1. Once booted run the following to change the hostname to `master` or similar and then reboot.
+1. Once booted run the following to change the hostname to `master` or similar:
 
 ```
 sudo raspi-config
 ```
+1. While in `raspi-config` also configure your wireless to connect to a wireless network. This will be used for your outside internet connection on interface `wlan0`
+1. Reboot the pi and make sure the hostname is set and that your `wlan0` interface has an internet connection
+1. Setup a static ip for `eth0` interface on your `master` node
 
-# Master Node Network Setup
-  * I aslo setup the Wifi connection on the `master` node, so the `wlan0` interface will connect to the internet while `eth0` 
+```
+sudo nano /etc/network/interfaces.d/eht0
+```
 
+Then add the following to the file:
+```
+allow-hotplug eth0
+iface eth0 inet static
+	address 10.0.0.1
+	netmask 255.255.255.0
+	broadcast 10.0.0.255
+	gateway 10.0.0.1
+ ```
+ 
+ 1. Save & Exit, then reboot. After reboot verify your `eth0` ip address is `10.0.0.1` by running:
+ ```
+ ifconfig
+ ```
+ 
+ 1. Setup a dhcp server on the `master` node by installing `isc-dhcp-server` as follows:
+ ```
+ sudo apt-get install isc-dhcp-server
+ ```
+ 
+ Config your dhcp server by editing the following /etc/dhcp/dhcpd.conf
+ 
+ ```
+sudo nano /etc/dhcp/dhcpd.conf
+ ```
+ 
+ Then add the following to the file:
+ ```
+ # Set a domain name
+option domain-name "cluster.home"
+
+# Google DNS
+option domain-name-servers 8.8.8.8, 8.8.4.4;
+
+# 10.0.0.X This will support up to 10 nodes in the cluster increase if you want more
+subnet 10.0.0.0 netmask 255.255.255.0 {
+	range 10.0.0.1 10.0.0.10;
+	option subnet-mask 255.255.255.0;
+	option broadcast-address 10.0.0.255;
+	option routers 10.0.0.1;
+}
+
+default-least-time 600;
+max-lease-time 7200;
+authoritative;
+```
+
+For the other nodes in your cluster connected to the switch to be able to have internet we need to enabled port forwarding and setup the iptables to use the master nodes `wlan0` internet connection and route that to the master nodes `eth0` interface so the other connected devices can access the public internet
+
+1. Setup Port Forwarding edit the following file /etc/sysctl.conf
+```
+sudo nano /etc/sysctl.conf
+```
+
+Uncomment or set the following to enable port fowarding:
+```
+net.ipv4.ip_forward=1
+```
+
+1. Setup the iptables so the master node can forward the `wlan0` interface connected to the internet to the `eth0` interface connected to the switch
+```
+sudo nano /etc/rc.local
+```
+
+There might be something in this file just make sure you add the below changes before the `exit 0`
+
+```
+iptables -t nat -A POSTROUTING -o wlan0 -j MASQUERADE
+iptables -A FORWARD -i wlan0 -o eth0 -m state --state RELATED,ESTABLISHED -j ACCEPT
+iptables -A FORWARD -i eht0 -o wlan0 -j ACCEPT
+```
+For these changes to take effect you need to reboot the pi as the `/etc/rc.local` will be executed upon startup. 
+
+At this point you should have the following setup:
+* a unique hostname for the master node
+* static ip address for the master node 10.0.0.1
+* `wlan0` setup on the master node to access the public internet
+* dhcp server running on the master node
+* iptables/port forwarding enabled so devices connected to the switch can access the public internet over the master nodes `wlan0` interface
 
 
 
