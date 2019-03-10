@@ -10,8 +10,8 @@ A simple guide to building a Kubernetes cluster with Raspberry Pi. I started by 
 ##### Table of Contents  
 [Parts List](#partslist)  
 
-## Parts List
 <a name="partslist"/>
+## Parts List
 * Raspberry Pi 3 B+ Motherboard - (recommend at least 3 or more)
 * High quality micro SDHC card - (One for each Raspberry Pi)
 * Raspberry Pi Cluster Case
