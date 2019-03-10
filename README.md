@@ -170,13 +170,11 @@ $ curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key a
   sudo apt-get install -qy kubeadm
 ```
 
-## Initialize your master node
-
 * You now have two new commands installed:
  * kubeadm - used to create new clusters or join an existing one
  * kubectl - the CLI administration tool for Kubernetes
  
-* Pre-pull images
+17. Pre-pull images
 
 `kubeadm` now has a command to pre-pull the requisites Docker images needed to run a Kubernetes master, type in:
 
@@ -184,9 +182,7 @@ $ curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key a
 $ sudo kubeadm config images pull -v3
 ```
 
-Using Flannel:
-
-* Initialize your master node with a Pod network CIDR:
+17. Using Flannel initialize your master node with a Pod network CIDR:
 
 ```
 $ sudo kubeadm init --token-ttl=0 --pod-network-cidr=10.244.0.0/16
@@ -197,5 +193,16 @@ We pass in `--token-ttl=0` so that the token never expires - do not use this set
 > Optionally also pass `--apiserver-advertise-address=10.0.0.1` with the IP of the Pi as found by typing `ifconfig`.
 
 
+18. Apply the Flannel driver on the master:
+
+```
+$ kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+```
+
+On each node that joins including the master:
+
+```
+$ sudo sysctl net.bridge.bridge-nf-call-iptables=1
+```
 
 
