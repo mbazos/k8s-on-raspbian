@@ -17,17 +17,28 @@ A simple guide to building a Kubernetes cluster with Raspberry Pi. I started by 
 * Barrell Plug to USB - (Optional but means you can power the Ethernet Switch with USB)
 * A way to plug in the micro SDHC into your computer for flashing Raspbian
 
-Exact parts I purchased via Amazon:
-* [Element14 Raspberry Pi 3 B+ Motherboard](https://www.amazon.com/gp/product/B07BDR5PDW/ref=ppx_yo_dt_b_asin_title_o03_s00?ie=UTF8&psc=1)
-* [SanDisk Ultra 32GB microSDHC UHS-I card with Adapter - 98MB/s U1 A1 - SDSQUAR-032G-GN6MA](https://www.amazon.com/gp/product/B073JWXGNT/ref=ppx_yo_dt_b_asin_title_o02_s00?ie=UTF8&psc=1)
-* [iUniker Raspberry Pi Cluster Case, Raspberry Pi Case with Cooling Fan and Raspberry Pi Heatsink for Raspberry Pi 3 Model B+, Pi 3 B, Pi 2 B, Pi B+ (4-Layers)](https://www.amazon.com/gp/product/B07CTG5N3V/ref=ppx_yo_dt_b_asin_title_o03_s00?ie=UTF8&psc=1)
-* [TP-Link 5 Port Fast Ethernet Switch | Desktop Ethernet Splitter | Ethernet Hub | Plug and Play | Fanless Quite | Unmanaged (TL-SF1005D)](https://www.amazon.com/gp/product/B000FNFSPY/ref=ppx_od_dt_b_asin_title_s00?ie=UTF8&psc=1)
-* [5 Port USB Wall Charger Hub, 40W 8A, Desktop USB Charging Station for Multiple Devices, Multi Ports USB Charger for Phones, Tablets and More](https://www.amazon.com/gp/product/B07DNQJSC4/ref=ppx_yo_dt_b_asin_title_o03_s00?ie=UTF8&psc=1)
-* [CablesOnline 5-PACK 6 inch USB 2.0 A-Type Male to Micro-B Male Charge & Sync Cable, USB-1500-5](https://www.amazon.com/gp/product/B00D0XUKIQ/ref=ppx_yo_dt_b_asin_title_o04_s00?ie=UTF8&psc=1)
-* [Buhbo 0.5 FT (6 inch) Cat6 Flat Ethernet Network Cable RJ45 (5-Pack), Black](https://www.amazon.com/gp/product/B01HC11V4I/ref=ppx_od_dt_b_asin_title_s00?ie=UTF8&psc=1)
-* [Onite DC Plugs Small Electronics and Devices Universal 5.5x2.1mm Jack to Plugs 4.0x1.7mm, 3.5x1.35mm, 3.0x1.0mm, 2.5x0.7mm, USB to DC 5.5x2.1mm Cable (DC4+1)](https://www.amazon.com/gp/product/B01C5KQD5I/ref=ppx_yo_dt_b_asin_title_o00_s00?ie=UTF8&psc=1)
-
-## Setting up the Raspberry Pi's SD cars
-
+## Setting up the Raspberry Pi's SD cards
 1. Download [Raspbian Stretch Lite](https://www.raspberrypi.org/downloads/raspbian/)
 1. Flash Each micro SDHC card using [Etcher.io](https://etcher.io) or any other preferred method for flashing
+
+# Setting up the Raspberry Pi Master Node
+1. Plug in the SDHC card to the pi
+1. Plug in the the `master` node pi to the network switch
+1. Boot up the `master` node.
+1. Once booted run the following to change the hostname to `master` or similar and then reboot.
+
+```
+sudo raspi-config
+```
+
+# Master Node Network Setup
+  * I aslo setup the Wifi connection on the `master` node, so the `wlan0` interface will connect to the internet while `eth0` 
+
+
+
+
+
+
+
+
+
