@@ -34,16 +34,17 @@ A simple guide to building a Kubernetes cluster with Raspberry Pi. I started by 
 
 # Setting up the Raspberry Pi Master Node
 1. Plug in the SDHC card to the pi
-1. Plug in the the `master` node pi to the network switch
-1. Boot up the `master` node.
-1. Once booted run the following to change the hostname to `master` or similar:
+2. Plug in the the `master` node pi to the network switch
+3. Boot up the `master` node.
+4. Once booted run the following to change the hostname to `master` or similar:
 
 ```
 sudo raspi-config
 ```
-1. While in `raspi-config` also configure your wireless to connect to a wireless network. This will be used for your outside internet connection on interface `wlan0`
-1. Reboot the pi and make sure the hostname is set and that your `wlan0` interface has an internet connection
-1. Setup a static ip for `eth0` interface on your `master` node
+
+5. While in `raspi-config` also configure your wireless to connect to a wireless network. This will be used for your outside internet connection on interface `wlan0`
+6. Reboot the pi and make sure the hostname is set and that your `wlan0` interface has an internet connection
+7. Setup a static ip for `eth0` interface on your `master` node
 
 ```
 sudo nano /etc/network/interfaces.d/eht0
@@ -59,12 +60,12 @@ iface eth0 inet static
 	gateway 10.0.0.1
  ```
  
- 1. Save & Exit, then reboot. After reboot verify your `eth0` ip address is `10.0.0.1` by running:
+ 8. Save & Exit, then reboot. After reboot verify your `eth0` ip address is `10.0.0.1` by running:
  ```
  ifconfig
  ```
  
- 1. Setup a dhcp server on the `master` node by installing `isc-dhcp-server` as follows:
+ 9. Setup a dhcp server on the `master` node by installing `isc-dhcp-server` as follows:
  ```
  sudo apt-get install isc-dhcp-server
  ```
@@ -98,7 +99,7 @@ authoritative;
 
 For the other nodes in your cluster connected to the switch to be able to have internet we need to enabled port forwarding and setup the iptables to use the master nodes `wlan0` internet connection and route that to the master nodes `eth0` interface so the other connected devices can access the public internet
 
-1. Setup Port Forwarding edit the following file /etc/sysctl.conf
+10. Setup Port Forwarding edit the following file /etc/sysctl.conf
 ```
 sudo nano /etc/sysctl.conf
 ```
@@ -107,8 +108,7 @@ Uncomment or set the following to enable port fowarding:
 ```
 net.ipv4.ip_forward=1
 ```
-
-1. Setup the iptables so the master node can forward the `wlan0` interface connected to the internet to the `eth0` interface connected to the switch
+11. Setup the iptables so the master node can forward the `wlan0` interface connected to the internet to the `eth0` interface connected to the switch
 ```
 sudo nano /etc/rc.local
 ```
@@ -129,9 +129,72 @@ At this point you should have the following setup:
 * dhcp server running on the master node
 * iptables/port forwarding enabled so devices connected to the switch can access the public internet over the master nodes `wlan0` interface
 
+12. Install Docker
 
+```
+$ curl -sSL get.docker.com | sh && sudo usermod pi -aG docker newgrp docker
+```
 
+13. Disable swap
 
+For Kubernetes 1.7 and onwards you will get an error if swap space is enabled.
+
+Turn off swap:
+
+```
+$ sudo dphys-swapfile swapoff && sudo dphys-swapfile uninstall && sudo update-rc.d dphys-swapfile remove
+```
+
+This should now show no entries:
+
+```
+$ sudo swapon --summary
+```
+
+14. Edit `/boot/cmdline.txt`
+
+Add this text at the end of the line, but don't create any new lines:
+
+```
+cgroup_enable=cpuset cgroup_memory=1 cgroup_enable=memory
+```
+
+15. Reboot the pi
+
+16. Add repo lists & install `kubeadm`
+
+```
+$ curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add - && \
+  echo "deb http://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list && \
+  sudo apt-get update -q && \
+  sudo apt-get install -qy kubeadm
+```
+
+## Initialize your master node
+
+* You now have two new commands installed:
+ * kubeadm - used to create new clusters or join an existing one
+ * kubectl - the CLI administration tool for Kubernetes
+ 
+* Pre-pull images
+
+`kubeadm` now has a command to pre-pull the requisites Docker images needed to run a Kubernetes master, type in:
+
+```
+$ sudo kubeadm config images pull -v3
+```
+
+Using Flannel:
+
+* Initialize your master node with a Pod network CIDR:
+
+```
+$ sudo kubeadm init --token-ttl=0 --pod-network-cidr=10.244.0.0/16
+```
+
+We pass in `--token-ttl=0` so that the token never expires - do not use this setting in production. The UX for `kubeadm` means it's currently very hard to get a join token later on after the initial token has expired. 
+
+> Optionally also pass `--apiserver-advertise-address=10.0.0.1` with the IP of the Pi as found by typing `ifconfig`.
 
 
 
