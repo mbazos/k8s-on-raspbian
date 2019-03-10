@@ -29,5 +29,5 @@ Exact parts I purchased via Amazon:
 
 ## Setting up the Raspberry Pi's SD cars
 
-* Download [Raspbian Stretch Lite](https://www.raspberrypi.org/downloads/raspbian/)
-* Flash Each micro SDHC card using [Etcher.io](https://etcher.io) or any other preferred method for flashing
+1. Download [Raspbian Stretch Lite](https://www.raspberrypi.org/downloads/raspbian/)
+1. Flash Each micro SDHC card using [Etcher.io](https://etcher.io) or any other preferred method for flashing
