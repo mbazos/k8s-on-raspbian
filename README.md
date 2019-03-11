@@ -1,6 +1,8 @@
 # Kubernetes on Raspbian Lite
 
-A simple guide to building a Kubernetes cluster with Raspberry Pi. I started by reading O`Rielly Kubernetes: Up and Running and the guide in there uses [Hypriot OS](https://blog.hypriot.com/) which I believe was before Raspbian supported cgroups to run containers. This guide is being written for my own education and is a combination of information from Kubernetes: Up and Running and Alex Ellis [k8s-on-raspian guide](https://github.com/alexellis/k8s-on-raspbian). Alex Ellis did an excellent job with his [k8s-on-raspian guide](https://github.com/alexellis/k8s-on-raspbian) so please check it out.
+A simple guide to building a Kubernetes cluster with Raspberry Pi. I started by reading O`Rielly Kubernetes: Up and Running and the guide in there uses [Hypriot OS](https://blog.hypriot.com/) which I believe was before Raspbian supported cgroups to run containers. This guide is being written for my own education and is a combination of information from Kubernetes: Up and Running and Alex Ellis [k8s-on-raspian guide](https://github.com/alexellis/k8s-on-raspbian). 
+
+[@alexellisuk](https://twitter.com/alexellisuk) did an excellent job with his [k8s-on-raspian guide](https://github.com/alexellis/k8s-on-raspbian) so please check it out.
 
 ## Credit/Sources
 [Alex Ellis](https://github.com/alexellis/)
@@ -210,4 +212,26 @@ On each node that joins including the master:
 $ sudo sysctl net.bridge.bridge-nf-call-iptables=1
 ```
 
+## Joining other nodes
 
+* Plug in the SDHC card to the pi
+* Plug in the the node pi to the network switch
+* Boot up the node.
+* Once booted run the following to change the hostname to `node-1` or similar:
+
+```
+sudo raspi-config
+```
+
+* Join the cluster
+
+Replace the token / IP for the output you got from the master node, for example:
+
+```
+$ sudo kubeadm join --token <YOUR TOKEN> 10.0.0.1:6443
+```
+
+You can now run this on the master:
+
+```
+```
