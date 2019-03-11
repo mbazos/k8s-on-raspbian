@@ -228,8 +228,9 @@ sudo raspi-config
 Replace the token / IP for the output you got from the master node, for example:
 
 ```
-$ sudo kubeadm join --token <YOUR TOKEN> 10.0.0.1:6443
+$ sudo kubeadm join --token <YOUR TOKEN> 10.0.0.1:6443 --discovery-token-unsafe-skip-ca-verification
 ```
+> `--discovery-token-unsafe-skip-ca-verification` is needed unless you provide the ca verification key. I wouldn't recommend doing this for a real production environment.
 
 You can now run this on the master:
 
