@@ -10,26 +10,11 @@ A simple guide to building a Kubernetes cluster with Raspberry Pi. I started by 
 Table of contents
 =================
 
-<!--ts-->
-   * [gh-md-toc](#gh-md-toc)
-   * [Table of contents](#Parts List)
-   * [Installation](#installation)
-   * [Usage](#usage)
-      * [STDIN](#stdin)
-      * [Local files](#local-files)
-      * [Remote files](#remote-files)
-      * [Multiple files](#multiple-files)
-      * [Combo](#combo)
-      * [Auto insert and update TOC](#auto-insert-and-update-toc)
-      * [Github token](#github-token)
-   * [Tests](#tests)
-   * [Dependency](#dependency)
-<!--te-->
-
 
 ##### Table of Contents
 
-## Parts List
+Parts List
+============
 * Raspberry Pi 3 B+ Motherboard - (recommend at least 3 or more)
 * High quality micro SDHC card - (One for each Raspberry Pi)
 * Raspberry Pi Cluster Case
