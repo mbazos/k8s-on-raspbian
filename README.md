@@ -10,6 +10,8 @@ A simple guide to building a Kubernetes cluster with Raspberry Pi. I started by 
 ##### Table of Contents  
 [Parts List](#parts-list)  
 [My Setup](#my-setup)
+[Flash Pi SD cards](#flash-pi-sd-cards)
+[Master Node Setup](#master-node-setup)
 
 ## Parts List
 * Raspberry Pi 3 B+ Motherboard - (recommend at least 3 or more)
@@ -32,23 +34,23 @@ A simple guide to building a Kubernetes cluster with Raspberry Pi. I started by 
 * [5-PACK 6 inch Ethernet Cable](https://www.amazon.com/gp/product/B01HC11V4I/ref=ppx_od_dt_b_asin_title_s00?ie=UTF8&psc=1)
 * [Barrel Plug To USB](https://www.amazon.com/gp/product/B01C5KQD5I/ref=ppx_yo_dt_b_asin_title_o00_s00?ie=UTF8&psc=1)
 
-## Setting up the Raspberry Pi's SD cards
-1. Download [Raspbian Stretch Lite](https://www.raspberrypi.org/downloads/raspbian/)
-1. Flash Each micro SDHC card using [Etcher.io](https://etcher.io) or any other preferred method for flashing
+## Flash Pi SD cards
+* Download [Raspbian Stretch Lite](https://www.raspberrypi.org/downloads/raspbian/)
+* Flash Each micro SDHC card using [Etcher.io](https://etcher.io) or any other preferred method for flashing
 
-# Setting up the Raspberry Pi Master Node
-1. Plug in the SDHC card to the pi
-2. Plug in the the `master` node pi to the network switch
-3. Boot up the `master` node.
-4. Once booted run the following to change the hostname to `master` or similar:
+## Master Node Setup
+* Plug in the SDHC card to the pi
+* Plug in the the `master` node pi to the network switch
+* Boot up the `master` node.
+* Once booted run the following to change the hostname to `master` or similar:
 
 ```
 sudo raspi-config
 ```
 
-5. While in `raspi-config` also configure your wireless to connect to a wireless network. This will be used for your outside internet connection on interface `wlan0`
-6. Reboot the pi and make sure the hostname is set and that your `wlan0` interface has an internet connection
-7. Setup a static ip for `eth0` interface on your `master` node
+* While in `raspi-config` also configure your wireless to connect to a wireless network. This will be used for your outside internet connection on interface `wlan0`
+* Reboot the pi and make sure the hostname is set and that your `wlan0` interface has an internet connection
+* Setup a static ip for `eth0` interface on your `master` node
 
 ```
 $ sudo nano /etc/network/interfaces.d/eht0
@@ -64,23 +66,23 @@ iface eth0 inet static
 	gateway 10.0.0.1
  ```
  
- 8. Save & Exit, then reboot. After reboot verify your `eth0` ip address is `10.0.0.1` by running:
+* Save & Exit, then reboot. After reboot verify your `eth0` ip address is `10.0.0.1` by running:
  ```
  $ ifconfig
  ```
  
- 9. Setup a dhcp server on the `master` node by installing `isc-dhcp-server` as follows:
+* Setup a dhcp server on the `master` node by installing `isc-dhcp-server` as follows:
  ```
 $ sudo apt-get install isc-dhcp-server
  ```
  
- Config your dhcp server by editing the following /etc/dhcp/dhcpd.conf
+Config your dhcp server by editing the following /etc/dhcp/dhcpd.conf
  
  ```
 $ sudo nano /etc/dhcp/dhcpd.conf
  ```
  
- Then add the following to the file:
+Then add the following to the file:
  ```
  # Set a domain name
 option domain-name "cluster.home"
@@ -103,7 +105,7 @@ authoritative;
 
 For the other nodes in your cluster connected to the switch to be able to have internet we need to enabled port forwarding and setup the iptables to use the master nodes `wlan0` internet connection and route that to the master nodes `eth0` interface so the other connected devices can access the public internet
 
-10. Setup Port Forwarding edit the following file /etc/sysctl.conf
+* Setup Port Forwarding edit the following file /etc/sysctl.conf
 ```
 $ sudo nano /etc/sysctl.conf
 ```
@@ -112,7 +114,7 @@ Uncomment or set the following to enable port fowarding:
 ```
 net.ipv4.ip_forward=1
 ```
-11. Setup the iptables so the master node can forward the `wlan0` interface connected to the internet to the `eth0` interface connected to the switch
+* Setup the iptables so the master node can forward the `wlan0` interface connected to the internet to the `eth0` interface connected to the switch
 ```
 $ sudo nano /etc/rc.local
 ```
@@ -133,13 +135,13 @@ At this point you should have the following setup:
 * dhcp server running on the master node
 * iptables/port forwarding enabled so devices connected to the switch can access the public internet over the master nodes `wlan0` interface
 
-12. Install Docker
+* Install Docker
 
 ```
 $ curl -sSL get.docker.com | sh && sudo usermod pi -aG docker newgrp docker
 ```
 
-13. Disable swap
+* Disable swap
 
 For Kubernetes 1.7 and onwards you will get an error if swap space is enabled.
 
@@ -155,7 +157,7 @@ This should now show no entries:
 $ sudo swapon --summary
 ```
 
-14. Edit `/boot/cmdline.txt`
+* Edit `/boot/cmdline.txt`
 
 Add this text at the end of the line, but don't create any new lines:
 
@@ -163,9 +165,8 @@ Add this text at the end of the line, but don't create any new lines:
 cgroup_enable=cpuset cgroup_memory=1 cgroup_enable=memory
 ```
 
-15. Reboot the pi
-
-16. Add repo lists & install `kubeadm`
+* Reboot the pi
+* Add repo lists & install `kubeadm`
 
 ```
 $ curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add - && \
@@ -178,7 +179,7 @@ $ curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key a
  * kubeadm - used to create new clusters or join an existing one
  * kubectl - the CLI administration tool for Kubernetes
  
-17. Pre-pull images
+* Pre-pull images
 
 `kubeadm` now has a command to pre-pull the requisites Docker images needed to run a Kubernetes master, type in:
 
@@ -186,7 +187,7 @@ $ curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key a
 $ sudo kubeadm config images pull -v3
 ```
 
-17. Using Flannel initialize your master node with a Pod network CIDR:
+* Using Flannel initialize your master node with a Pod network CIDR:
 
 ```
 $ sudo kubeadm init --token-ttl=0 --pod-network-cidr=10.244.0.0/16
@@ -197,7 +198,7 @@ We pass in `--token-ttl=0` so that the token never expires - do not use this set
 > Optionally also pass `--apiserver-advertise-address=10.0.0.1` with the IP of the Pi as found by typing `ifconfig`.
 
 
-18. Apply the Flannel driver on the master:
+* Apply the Flannel driver on the master:
 
 ```
 $ kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
