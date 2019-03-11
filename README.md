@@ -9,8 +9,11 @@ A simple guide to building a Kubernetes cluster with Raspberry Pi. I started by 
 
 ##### Table of Contents  
 [Parts List](#parts-list)  
+
 [My Setup](#my-setup)
+
 [Flash Pi SD cards](#flash-pi-sd-cards)
+
 [Master Node Setup](#master-node-setup)
 
 ## Parts List
