@@ -15,6 +15,7 @@ A simple guide to building a Kubernetes cluster with Raspberry Pi. I started by 
 * [Flash Pi SD cards](#flash-pi-sd-cards)
 * [Master Node Setup](#master-node-setup)
 * [Joining Nodes](#joining-nodes)
+* [Finishing Up](#finishing-up)
 
 ## Parts List
 * Raspberry Pi 3 B+ Motherboard - (recommend at least 3 or more)
@@ -237,7 +238,9 @@ $ sudo kubeadm join --token <YOUR TOKEN> 10.0.0.1:6443 --discovery-token-unsafe-
 ```
 > `--discovery-token-unsafe-skip-ca-verification` is needed unless you provide the ca verification key which is very long. I wouldn't recommend passing this flag in for a real production environment.
 
-You can now run this on the master:
+## Finishing Up
+With your master running and your nodes joined to your master you should be able to finnaly run this on the master:
 
 ```
+$ kubectl get nodes
 ```
