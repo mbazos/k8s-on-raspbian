@@ -207,12 +207,6 @@ We pass in `--token-ttl=0` so that the token never expires - do not use this set
 $ kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
 ```
 
-On each node that joins including the master:
-
-```
-$ sudo sysctl net.bridge.bridge-nf-call-iptables=1
-```
-
 ## Joining Nodes
 
 * Plug in the SDHC card to the pi
@@ -224,10 +218,20 @@ $ sudo sysctl net.bridge.bridge-nf-call-iptables=1
 sudo raspi-config
 ```
 
+* Install kubeam & kubctl on the node
+```
+$ curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add - && \
+  echo "deb http://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list && \
+  sudo apt-get update -q && \
+  sudo apt-get install -qy kubeadm
+```
+
+* Run on each node (required for Flannel):
+```
+$ sudo sysctl net.bridge.bridge-nf-call-iptables=1
+```
+
 * Join the cluster
-
-Replace the token / IP for the output you got from the master node, for example:
-
 ```
 $ sudo kubeadm join --token <YOUR TOKEN> 10.0.0.1:6443 --discovery-token-unsafe-skip-ca-verification
 ```
