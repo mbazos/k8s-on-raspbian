@@ -12,7 +12,7 @@ Table of contents
 
 <!--ts-->
    * [gh-md-toc](#gh-md-toc)
-   * [Table of contents](#parts_list)
+   * [Table of contents](#Parts List)
    * [Installation](#installation)
    * [Usage](#usage)
       * [STDIN](#stdin)
@@ -28,7 +28,6 @@ Table of contents
 
 
 ##### Table of Contents
-[Parts List](#parts_list)
 
 ## Parts List
 * Raspberry Pi 3 B+ Motherboard - (recommend at least 3 or more)
