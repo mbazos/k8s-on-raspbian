@@ -57,7 +57,7 @@ sudo raspi-config
 * Setup a static ip for `eth0` interface on your `master` node
 
 ```
-$ sudo nano /etc/network/interfaces.d/eht0
+$ sudo nano /etc/network/interfaces.d/eth0
 ```
 
 Then add the following to the file:
