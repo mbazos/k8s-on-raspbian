@@ -118,6 +118,15 @@ Uncomment or set the following to enable port fowarding:
 ```
 net.ipv4.ip_forward=1
 ```
+
+```
+/etc/default/isc-dhcp-server
+```
+
+```
+INTERFACES="eth0"
+```
+
 * Setup the iptables so the master node can forward the `wlan0` interface connected to the internet to the `eth0` interface connected to the switch
 ```
 $ sudo nano /etc/rc.local
